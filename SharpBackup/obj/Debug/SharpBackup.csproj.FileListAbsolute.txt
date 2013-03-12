@@ -1,0 +1,11 @@
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\bin\Debug\SharpBackup.exe.config
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\bin\Debug\SharpBackup.exe
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\bin\Debug\SharpBackup.pdb
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.csprojResolveAssemblyReference.cache
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.EditBackupForm.resources
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.MainForm.resources
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.Properties.Resources.resources
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.csproj.GenerateResource.Cache
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.exe
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.pdb
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.CreateOneTimeBackupForm.resources
