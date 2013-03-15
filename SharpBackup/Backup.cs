@@ -9,20 +9,18 @@ namespace SharpBackup
     class Backup
     {
         private String name;
-        private List<String> mainPaths;
+        private String mainPath;
         private String backupPath;
+        private bool isDirectory;
 
-        public Backup(String name, String[] mainPaths, String backupPath)
+        public String MainPath { get { return mainPath; } }
+
+        public Backup(String name, String mainPath, String backupPath, bool isDirectory)
         {
-            this.mainPaths = new List<String>();
-
             this.name = name;
-            foreach (String path in mainPaths)
-            {
-                this.mainPaths.Add(path);
-            }
-
+            this.mainPath = mainPath;
             this.backupPath = backupPath;
+            this.isDirectory = isDirectory;
         }
     }
 }

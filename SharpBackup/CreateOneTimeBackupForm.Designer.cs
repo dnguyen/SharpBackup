@@ -38,6 +38,11 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.addFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.addFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.txtBackupPath = new System.Windows.Forms.TextBox();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.lblBackupPath = new System.Windows.Forms.Label();
+            this.addBackupDestDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.createBackupsWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // oneTimeBackupFoldersListView
@@ -97,39 +102,74 @@
             this.btnRemove.TabIndex = 1;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 196);
+            this.progressBar1.Location = new System.Drawing.Point(12, 244);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(340, 23);
             this.progressBar1.TabIndex = 3;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(358, 196);
+            this.btnStart.Location = new System.Drawing.Point(358, 244);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // addFileDialog
             // 
             this.addFileDialog.FileName = "openFileDialog1";
             // 
+            // txtBackupPath
+            // 
+            this.txtBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBackupPath.Location = new System.Drawing.Point(12, 204);
+            this.txtBackupPath.Name = "txtBackupPath";
+            this.txtBackupPath.Size = new System.Drawing.Size(340, 21);
+            this.txtBackupPath.TabIndex = 5;
+            // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Location = new System.Drawing.Point(358, 204);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(75, 21);
+            this.btnBrowse.TabIndex = 1;
+            this.btnBrowse.Text = "...";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // lblBackupPath
+            // 
+            this.lblBackupPath.AutoSize = true;
+            this.lblBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBackupPath.Location = new System.Drawing.Point(12, 184);
+            this.lblBackupPath.Name = "lblBackupPath";
+            this.lblBackupPath.Size = new System.Drawing.Size(130, 17);
+            this.lblBackupPath.TabIndex = 2;
+            this.lblBackupPath.Text = "Backup Destination";
+            // 
             // CreateOneTimeBackupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 231);
+            this.ClientSize = new System.Drawing.Size(439, 279);
+            this.Controls.Add(this.txtBackupPath);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.lblBackupPath);
             this.Controls.Add(this.lblBackups);
+            this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAddFile);
             this.Controls.Add(this.btnAddFolder);
             this.Controls.Add(this.oneTimeBackupFoldersListView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "CreateOneTimeBackupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create One-time Backup";
@@ -150,5 +190,10 @@
         private System.Windows.Forms.FolderBrowserDialog addFolderBrowser;
         private System.Windows.Forms.OpenFileDialog addFileDialog;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.TextBox txtBackupPath;
+        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Label lblBackupPath;
+        private System.Windows.Forms.FolderBrowserDialog addBackupDestDialog;
+        private System.ComponentModel.BackgroundWorker createBackupsWorker;
     }
 }
