@@ -43,6 +43,8 @@
             this.lblBackupPath = new System.Windows.Forms.Label();
             this.addBackupDestDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.createBackupsWorker = new System.ComponentModel.BackgroundWorker();
+            this.lblPercentage = new System.Windows.Forms.Label();
+            this.lblFileCreation = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // oneTimeBackupFoldersListView
@@ -106,9 +108,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 244);
+            this.progressBar1.Location = new System.Drawing.Point(15, 244);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(340, 23);
+            this.progressBar1.Size = new System.Drawing.Size(309, 23);
             this.progressBar1.TabIndex = 3;
             // 
             // btnStart
@@ -130,6 +132,7 @@
             this.txtBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBackupPath.Location = new System.Drawing.Point(12, 204);
             this.txtBackupPath.Name = "txtBackupPath";
+            this.txtBackupPath.ReadOnly = true;
             this.txtBackupPath.Size = new System.Drawing.Size(340, 21);
             this.txtBackupPath.TabIndex = 5;
             // 
@@ -153,11 +156,37 @@
             this.lblBackupPath.TabIndex = 2;
             this.lblBackupPath.Text = "Backup Destination";
             // 
+            // createBackupsWorker
+            // 
+            this.createBackupsWorker.WorkerReportsProgress = true;
+            this.createBackupsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.createBackupsWorker_DoWork);
+            this.createBackupsWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.createBackupsWorker_ProgressChanged);
+            this.createBackupsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.createBackupsWorker_RunWorkerCompleted);
+            // 
+            // lblPercentage
+            // 
+            this.lblPercentage.AutoSize = true;
+            this.lblPercentage.Location = new System.Drawing.Point(325, 249);
+            this.lblPercentage.Name = "lblPercentage";
+            this.lblPercentage.Size = new System.Drawing.Size(21, 13);
+            this.lblPercentage.TabIndex = 6;
+            this.lblPercentage.Text = "0%";
+            // 
+            // lblFileCreation
+            // 
+            this.lblFileCreation.AutoSize = true;
+            this.lblFileCreation.Location = new System.Drawing.Point(12, 228);
+            this.lblFileCreation.Name = "lblFileCreation";
+            this.lblFileCreation.Size = new System.Drawing.Size(0, 13);
+            this.lblFileCreation.TabIndex = 7;
+            // 
             // CreateOneTimeBackupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(439, 279);
+            this.Controls.Add(this.lblFileCreation);
+            this.Controls.Add(this.lblPercentage);
             this.Controls.Add(this.txtBackupPath);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.progressBar1);
@@ -195,5 +224,7 @@
         private System.Windows.Forms.Label lblBackupPath;
         private System.Windows.Forms.FolderBrowserDialog addBackupDestDialog;
         private System.ComponentModel.BackgroundWorker createBackupsWorker;
+        private System.Windows.Forms.Label lblPercentage;
+        private System.Windows.Forms.Label lblFileCreation;
     }
 }
