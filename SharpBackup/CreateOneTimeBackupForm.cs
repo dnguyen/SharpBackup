@@ -1,27 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SharpBackup
 {
     public partial class CreateOneTimeBackupForm : Form
     {
-        struct FileBackup
-        {
-            public String originalPath;
-            public String newBackupPath;
-        }
-
         List<Backup> backups = new List<Backup>();
-        List<String> filePaths = new List<String>();
-        List<String> directoryPaths = new List<String>();
+
+        int totalBackupCount = 0;
+        private int backupCount = 0;
 
         public CreateOneTimeBackupForm()
         {
@@ -32,13 +22,13 @@ namespace SharpBackup
         {
             if (addFolderBrowser.ShowDialog(this) == DialogResult.OK)
             {
-                String folderPath = addFolderBrowser.SelectedPath;
-                if (folderPath != "")
-                {
-                    Backup backup = new Backup("", addFolderBrowser.SelectedPath, txtBackupPath.Text, true);
-                    backups.Add(backup);
-                    oneTimeBackupFoldersListView.Items.Add(addFolderBrowser.SelectedPath);
-                }
+                if (addFolderBrowser.SelectedPath == "") return;
+
+                var backup = new Backup("", addFolderBrowser.SelectedPath, txtBackupPath.Text, true);
+                backup.OnFileCopied += FileCopied;
+                backups.Add(backup);
+
+                oneTimeBackupFoldersListView.Items.Add(addFolderBrowser.SelectedPath);
             }
         }
 
@@ -47,12 +37,14 @@ namespace SharpBackup
             if (addFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 String filePath = addFileDialog.InitialDirectory + addFileDialog.FileName;
-                if (filePath != "")
-                {
-                    Backup backup = new Backup("", filePath, txtBackupPath.Text, false);
-                    backups.Add(backup);
-                    oneTimeBackupFoldersListView.Items.Add(filePath);
-                }
+
+                if (filePath == "") return;
+
+                var backup = new Backup("", filePath, txtBackupPath.Text, false);
+                backup.OnFileCopied += FileCopied;
+                backups.Add(backup);
+
+                oneTimeBackupFoldersListView.Items.Add(filePath);
             }
         }
 
@@ -60,6 +52,7 @@ namespace SharpBackup
         {
             if (oneTimeBackupFoldersListView.SelectedItems.Count > 0)
             {
+                backups.RemoveAt(oneTimeBackupFoldersListView.SelectedIndices[0]);
                 oneTimeBackupFoldersListView.Items.RemoveAt(oneTimeBackupFoldersListView.SelectedIndices[0]);
             }
         }
@@ -69,6 +62,9 @@ namespace SharpBackup
             if (addBackupDestDialog.ShowDialog(this) == DialogResult.OK)
             {
                 txtBackupPath.Text = addBackupDestDialog.SelectedPath;
+                btnAddFolder.Enabled = true;
+                btnAddFile.Enabled = true;
+                btnRemove.Enabled = true;
             }
         }
 
@@ -91,6 +87,13 @@ namespace SharpBackup
             createBackupsWorker.RunWorkerAsync();
         }
 
+        private void FileCopied(FileBackup fileBackup)
+        {
+            backupCount++;
+            double percentage = ((double)backupCount / (double)totalBackupCount) * 100;
+            createBackupsWorker.ReportProgress((int)percentage, fileBackup);
+        }
+
         private void createBackupsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var paths = new List<FileBackup>();
@@ -98,54 +101,15 @@ namespace SharpBackup
             // Add all files from backup targets to a list to calculate progress percentage for progress bar.
             foreach (Backup backup in backups)
             {
-                // Check if the path is a directory or file.
-                // If it's a directory, get all directories and files within it.
-                if (Directory.Exists(backup.MainPath))
-                {
-                    String[] directoriesPaths = Directory.GetDirectories(backup.MainPath, "*", SearchOption.AllDirectories);
-                    String[] filePaths = Directory.GetFiles(backup.MainPath, "*", SearchOption.AllDirectories);
-
-                    // Create directories in backup path
-                    foreach (String directoryPath in directoriesPaths)
-                    {
-                        String newBackupPath = directoryPath.Replace(backup.MainPath, txtBackupPath.Text);
-                        Directory.CreateDirectory(newBackupPath);
-                    }
-                    // Copy files over to the backup path
-                    foreach (String filePath in filePaths)
-                    {
-                        String newBackupPath = filePath.Replace(backup.MainPath, txtBackupPath.Text);
-
-                        var fileBackup = new FileBackup {
-                            originalPath = filePath, 
-                            newBackupPath = newBackupPath
-                        };
-
-                        paths.Add(fileBackup);
-                    }
-                }
-                // If it's a file, just create a copy of the file to the backup path.
-                else if (File.Exists(backup.MainPath))
-                {
-                    var fileBackup = new FileBackup() {
-                        originalPath = backup.MainPath,
-                        newBackupPath = txtBackupPath.Text + "\\" + Path.GetFileName(backup.MainPath)
-                   };
-                    paths.Add(fileBackup);
-                }
+                backup.SetFilePaths();
+                totalBackupCount += backup.FileCount;
             }
 
-            Console.WriteLine("Total files to create backups for: " + paths.Count);
+            Console.WriteLine("Total files to create backups for: " + backupCount);
 
-            int backupCount = 0;
-            foreach (FileBackup fileBackup in paths)
+            foreach (Backup backup in backups)
             {
-                File.Copy(fileBackup.originalPath, fileBackup.newBackupPath, true);
-                Console.WriteLine("#" + fileBackup.newBackupPath);
-
-                backupCount++;
-                double percentage = ((double)backupCount / (double)paths.Count) * 100;
-                createBackupsWorker.ReportProgress((int)percentage, fileBackup);
+                backup.CopyFilesToBackupPath();
             }
         }
 
@@ -155,7 +119,7 @@ namespace SharpBackup
             FileBackup fileBackup = (FileBackup)e.UserState;
             progressBar1.Value = e.ProgressPercentage;
             lblPercentage.Text = e.ProgressPercentage + "%";
-            lblFileCreation.Text = "Creating: " + fileBackup.newBackupPath;
+            lblFileCreation.Text = "Creating: " + fileBackup.NewBackupPath;
         }
 
         private void createBackupsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -163,6 +127,13 @@ namespace SharpBackup
             Console.WriteLine("Completed worker");
             MessageBox.Show("Backup complete!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             btnStart.Enabled = true;
+            lblPercentage.Text = "Backup complete!";
+            backupCount = 0;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

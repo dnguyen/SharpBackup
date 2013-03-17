@@ -45,6 +45,7 @@
             this.createBackupsWorker = new System.ComponentModel.BackgroundWorker();
             this.lblPercentage = new System.Windows.Forms.Label();
             this.lblFileCreation = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // oneTimeBackupFoldersListView
@@ -53,7 +54,7 @@
             this.columnHeader1});
             this.oneTimeBackupFoldersListView.FullRowSelect = true;
             this.oneTimeBackupFoldersListView.GridLines = true;
-            this.oneTimeBackupFoldersListView.Location = new System.Drawing.Point(12, 37);
+            this.oneTimeBackupFoldersListView.Location = new System.Drawing.Point(12, 85);
             this.oneTimeBackupFoldersListView.MultiSelect = false;
             this.oneTimeBackupFoldersListView.Name = "oneTimeBackupFoldersListView";
             this.oneTimeBackupFoldersListView.Size = new System.Drawing.Size(340, 140);
@@ -68,7 +69,8 @@
             // 
             // btnAddFolder
             // 
-            this.btnAddFolder.Location = new System.Drawing.Point(358, 37);
+            this.btnAddFolder.Enabled = false;
+            this.btnAddFolder.Location = new System.Drawing.Point(358, 85);
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Size = new System.Drawing.Size(75, 23);
             this.btnAddFolder.TabIndex = 1;
@@ -80,7 +82,7 @@
             // 
             this.lblBackups.AutoSize = true;
             this.lblBackups.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBackups.Location = new System.Drawing.Point(12, 17);
+            this.lblBackups.Location = new System.Drawing.Point(12, 65);
             this.lblBackups.Name = "lblBackups";
             this.lblBackups.Size = new System.Drawing.Size(62, 17);
             this.lblBackups.TabIndex = 2;
@@ -88,7 +90,8 @@
             // 
             // btnAddFile
             // 
-            this.btnAddFile.Location = new System.Drawing.Point(358, 66);
+            this.btnAddFile.Enabled = false;
+            this.btnAddFile.Location = new System.Drawing.Point(358, 114);
             this.btnAddFile.Name = "btnAddFile";
             this.btnAddFile.Size = new System.Drawing.Size(75, 23);
             this.btnAddFile.TabIndex = 1;
@@ -98,7 +101,8 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(358, 95);
+            this.btnRemove.Enabled = false;
+            this.btnRemove.Location = new System.Drawing.Point(358, 143);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(75, 23);
             this.btnRemove.TabIndex = 1;
@@ -108,14 +112,14 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(15, 244);
+            this.progressBar1.Location = new System.Drawing.Point(12, 244);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(309, 23);
+            this.progressBar1.Size = new System.Drawing.Size(385, 23);
             this.progressBar1.TabIndex = 3;
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(358, 244);
+            this.btnStart.Location = new System.Drawing.Point(277, 273);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 4;
@@ -130,7 +134,7 @@
             // txtBackupPath
             // 
             this.txtBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBackupPath.Location = new System.Drawing.Point(12, 204);
+            this.txtBackupPath.Location = new System.Drawing.Point(12, 41);
             this.txtBackupPath.Name = "txtBackupPath";
             this.txtBackupPath.ReadOnly = true;
             this.txtBackupPath.Size = new System.Drawing.Size(340, 21);
@@ -138,11 +142,11 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(358, 204);
+            this.btnBrowse.Location = new System.Drawing.Point(358, 41);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 21);
             this.btnBrowse.TabIndex = 1;
-            this.btnBrowse.Text = "...";
+            this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
@@ -150,7 +154,7 @@
             // 
             this.lblBackupPath.AutoSize = true;
             this.lblBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBackupPath.Location = new System.Drawing.Point(12, 184);
+            this.lblBackupPath.Location = new System.Drawing.Point(12, 21);
             this.lblBackupPath.Name = "lblBackupPath";
             this.lblBackupPath.Size = new System.Drawing.Size(130, 17);
             this.lblBackupPath.TabIndex = 2;
@@ -166,7 +170,7 @@
             // lblPercentage
             // 
             this.lblPercentage.AutoSize = true;
-            this.lblPercentage.Location = new System.Drawing.Point(325, 249);
+            this.lblPercentage.Location = new System.Drawing.Point(399, 249);
             this.lblPercentage.Name = "lblPercentage";
             this.lblPercentage.Size = new System.Drawing.Size(21, 13);
             this.lblPercentage.TabIndex = 6;
@@ -180,14 +184,25 @@
             this.lblFileCreation.Size = new System.Drawing.Size(0, 13);
             this.lblFileCreation.TabIndex = 7;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(358, 273);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 4;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // CreateOneTimeBackupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 279);
+            this.ClientSize = new System.Drawing.Size(439, 304);
             this.Controls.Add(this.lblFileCreation);
             this.Controls.Add(this.lblPercentage);
             this.Controls.Add(this.txtBackupPath);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lblBackupPath);
@@ -226,5 +241,6 @@
         private System.ComponentModel.BackgroundWorker createBackupsWorker;
         private System.Windows.Forms.Label lblPercentage;
         private System.Windows.Forms.Label lblFileCreation;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

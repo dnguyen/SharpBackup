@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.syncedBackupsListView = new System.Windows.Forms.ListView();
             this.lblBackups = new System.Windows.Forms.Label();
             this.btnAddSync = new System.Windows.Forms.Button();
@@ -37,17 +39,26 @@
             this.lblOneTimeBackup = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnCreateOneTimeBackup = new System.Windows.Forms.Button();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // syncedBackupsListView
             // 
+            this.syncedBackupsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.syncedBackupsListView.FullRowSelect = true;
+            this.syncedBackupsListView.GridLines = true;
             this.syncedBackupsListView.Location = new System.Drawing.Point(12, 31);
+            this.syncedBackupsListView.MultiSelect = false;
             this.syncedBackupsListView.Name = "syncedBackupsListView";
+            this.syncedBackupsListView.ShowGroups = false;
             this.syncedBackupsListView.Size = new System.Drawing.Size(259, 170);
             this.syncedBackupsListView.TabIndex = 0;
             this.syncedBackupsListView.UseCompatibleStateImageBehavior = false;
+            this.syncedBackupsListView.View = System.Windows.Forms.View.Details;
             // 
             // lblBackups
             // 
@@ -67,6 +78,7 @@
             this.btnAddSync.TabIndex = 2;
             this.btnAddSync.Text = "Add";
             this.btnAddSync.UseVisualStyleBackColor = true;
+            this.btnAddSync.Click += new System.EventHandler(this.btnAddSync_Click);
             // 
             // btnEdit
             // 
@@ -128,6 +140,21 @@
             this.btnCreateOneTimeBackup.UseVisualStyleBackColor = true;
             this.btnCreateOneTimeBackup.Click += new System.EventHandler(this.btnCreateOneTimeBackup_Click);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 255;
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "Test notification";
+            this.notifyIcon1.BalloonTipTitle = "test title";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "SharpBackup";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,6 +165,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpBackup";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -157,6 +185,8 @@
         private System.Windows.Forms.Label lblOneTimeBackup;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btnCreateOneTimeBackup;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
