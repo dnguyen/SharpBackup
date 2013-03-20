@@ -96,8 +96,6 @@ namespace SharpBackup
 
         private void createBackupsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var paths = new List<FileBackup>();
-
             // Add all files from backup targets to a list to calculate progress percentage for progress bar.
             foreach (Backup backup in backups)
             {

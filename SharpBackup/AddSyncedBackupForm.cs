@@ -58,6 +58,9 @@ namespace SharpBackup
             if (backupFolderDialog.ShowDialog() == DialogResult.OK)
             {
                 txtBackupPath.Text = backupFolderDialog.SelectedPath;
+                btnAddFolder.Enabled = true;
+                btnAddFile.Enabled = true;
+                btnRemove.Enabled = true;
             }
         }
 
@@ -79,6 +82,13 @@ namespace SharpBackup
             {
                 MessageBox.Show("No backups chosen.", "Add backup", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+            
+            // Create initial backup files/directories.
+            foreach (Backup backup in backups)
+            {
+                backup.SetFilePaths();
+                backup.CopyFilesToBackupPath();
             }
 
             if (AddSyncedBackupEvent != null)
