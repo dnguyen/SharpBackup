@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.syncedBackupsListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblBackups = new System.Windows.Forms.Label();
             this.btnAddSync = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -39,7 +40,6 @@
             this.lblOneTimeBackup = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnCreateOneTimeBackup = new System.Windows.Forms.Button();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -59,6 +59,11 @@
             this.syncedBackupsListView.TabIndex = 0;
             this.syncedBackupsListView.UseCompatibleStateImageBehavior = false;
             this.syncedBackupsListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 255;
             // 
             // lblBackups
             // 
@@ -139,11 +144,6 @@
             this.btnCreateOneTimeBackup.Text = "Create";
             this.btnCreateOneTimeBackup.UseVisualStyleBackColor = true;
             this.btnCreateOneTimeBackup.Click += new System.EventHandler(this.btnCreateOneTimeBackup_Click);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 255;
             // 
             // notifyIcon1
             // 

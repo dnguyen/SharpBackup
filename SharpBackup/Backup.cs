@@ -14,7 +14,6 @@ namespace SharpBackup
         private String name;
         private String mainPath;
         private String backupPath;
-        private bool isDirectory;
 
         // Files to create backups for
         private List<FileBackup> fileBackups;
@@ -23,17 +22,21 @@ namespace SharpBackup
 
         public String MainPath { get { return mainPath; } }
 
+        public String BackupPath
+        {
+            get { return backupPath; }
+        }
+
         public int FileCount
         {
             get { return fileBackups.Count; }
         }
 
-        public Backup(String name, String mainPath, String backupPath, bool isDirectory)
+        public Backup(String name, String mainPath, String backupPath)
         {
             this.name = name;
             this.mainPath = mainPath;
             this.backupPath = backupPath;
-            this.isDirectory = isDirectory;
             fileBackups = new List<FileBackup>();
         }
 

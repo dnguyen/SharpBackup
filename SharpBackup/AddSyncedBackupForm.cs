@@ -24,7 +24,7 @@ namespace SharpBackup
             {
                 if (addFolderDialog.SelectedPath == "") return;
 
-                var backup = new Backup(txtName.Text, addFolderDialog.SelectedPath, txtBackupPath.Text, true);
+                var backup = new Backup(txtName.Text, addFolderDialog.SelectedPath, txtBackupPath.Text);
                 backups.Add(backup);
                 listView1.Items.Add(addFolderDialog.SelectedPath);
             }
@@ -38,7 +38,7 @@ namespace SharpBackup
 
                 if (filePath == "") return;
 
-                var backup = new Backup(txtName.Text, filePath, txtBackupPath.Text, false);
+                var backup = new Backup(txtName.Text, filePath, txtBackupPath.Text);
                 backups.Add(backup);
                 listView1.Items.Add(filePath);
             }

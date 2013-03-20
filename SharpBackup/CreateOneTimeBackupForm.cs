@@ -24,7 +24,7 @@ namespace SharpBackup
             {
                 if (addFolderBrowser.SelectedPath == "") return;
 
-                var backup = new Backup("", addFolderBrowser.SelectedPath, txtBackupPath.Text, true);
+                var backup = new Backup("", addFolderBrowser.SelectedPath, txtBackupPath.Text);
                 backup.OnFileCopied += FileCopied;
                 backups.Add(backup);
 
@@ -40,7 +40,7 @@ namespace SharpBackup
 
                 if (filePath == "") return;
 
-                var backup = new Backup("", filePath, txtBackupPath.Text, false);
+                var backup = new Backup("", filePath, txtBackupPath.Text);
                 backup.OnFileCopied += FileCopied;
                 backups.Add(backup);
 

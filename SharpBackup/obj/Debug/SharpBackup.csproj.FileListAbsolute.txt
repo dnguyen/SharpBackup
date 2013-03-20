@@ -10,3 +10,4 @@ F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.exe
 F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.pdb
 F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.CreateOneTimeBackupForm.resources
 F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\obj\Debug\SharpBackup.AddSyncedBackupForm.resources
+F:\Dropbox\Dropbox\Programming\SharpBackup\SharpBackup\bin\Debug\Newtonsoft.Json.dll

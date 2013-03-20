@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SharpBackup
 {
@@ -15,6 +17,30 @@ namespace SharpBackup
         public MainForm()
         {
             InitializeComponent();
+
+            // TODO: Remove from form class
+            string settingsJson = System.IO.File.ReadAllText("settings.js");
+            JObject settingsObject = JObject.Parse(settingsJson);
+
+            JArray backupsJArray = (JArray) settingsObject["backups"];
+            foreach (JToken backupJson in backupsJArray)
+            {
+                var backup = new Backup(backupJson["name"].ToString(), backupJson["mainPath"].ToString(), backupJson["backupPath"].ToString());
+                Console.WriteLine(backup.MainPath);
+
+                var watcher = new FileSystemWatcher(backup.MainPath);
+                watcher.IncludeSubdirectories = true;
+                watcher.EnableRaisingEvents = true;
+                // Wizardry to pass the backup to the fileCreated event.
+                watcher.Created += (s, e) => fileCreated(watcher, e, backup);
+            }
+        }
+
+        private void fileCreated(object sender, FileSystemEventArgs e, Backup backup)
+        {
+            Console.WriteLine("created " + e.FullPath);
+            String newBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+            Console.WriteLine("Write backup to " + newBackupPath);
         }
 
         private void lblOneTimeBackup_Click(object sender, EventArgs e)
