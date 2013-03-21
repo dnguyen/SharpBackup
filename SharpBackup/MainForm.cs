@@ -26,26 +26,75 @@ namespace SharpBackup
             foreach (JToken backupJson in backupsJArray)
             {
                 var backup = new Backup(backupJson["name"].ToString(), backupJson["mainPath"].ToString(), backupJson["backupPath"].ToString());
+                backup.SetFilePaths();
+                backup.CopyFilesToBackupPath();
+
                 Console.WriteLine(backup.MainPath);
 
                 var watcher = new FileSystemWatcher(backup.MainPath);
                 watcher.IncludeSubdirectories = true;
                 watcher.EnableRaisingEvents = true;
-                // Wizardry to pass the backup to the fileCreated event.
-                watcher.Created += (s, e) => fileCreated(watcher, e, backup);
+
+                // Lambda expression to pass the backup to the watcher events.
+                watcher.Created += (s, e) => watcherCreated(watcher, e, backup);
+                watcher.Changed += (s, e) => watcherChanged(watcher, e, backup);
+                watcher.Deleted += (s, e) => watcherDeleted(watcher, e, backup);
             }
         }
 
-        private void fileCreated(object sender, FileSystemEventArgs e, Backup backup)
+        private void watcherCreated(object sender, FileSystemEventArgs e, Backup backup)
         {
-            Console.WriteLine("created " + e.FullPath);
-            String newBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
-            Console.WriteLine("Write backup to " + newBackupPath);
+            String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+            if (File.Exists(e.FullPath))
+            {
+                Console.WriteLine("created file" + e.FullPath);
+                File.Copy(e.FullPath, fullBackupPath, true);
+            }
+            else if (Directory.Exists(e.FullPath))
+            {
+                Console.WriteLine("create directory: " + e.FullPath);
+                Directory.CreateDirectory(fullBackupPath);
+            }
         }
 
-        private void lblOneTimeBackup_Click(object sender, EventArgs e)
+        private void watcherChanged(object sender, FileSystemEventArgs e, Backup backup)
         {
+            var watcher = (FileSystemWatcher) sender;
 
+            // Work-around for the bug/feature in FileSystemWatcher that will fire the event multiple times.
+            try
+            {
+                String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+                watcher.EnableRaisingEvents = false;
+                if (File.Exists(e.FullPath))
+                {
+                    Console.WriteLine("changed file: " + e.FullPath);
+                    File.Copy(e.FullPath, fullBackupPath, true);
+                }
+                else if (Directory.Exists(e.FullPath))
+                {
+                    Console.WriteLine("directory changed: " + e.FullPath);
+                }
+            }
+            finally
+            {
+                watcher.EnableRaisingEvents = true;
+            }
+        }
+
+        private void watcherDeleted(FileSystemWatcher watcher, FileSystemEventArgs e, Backup backup)
+        {
+            String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+            if (File.Exists(e.FullPath))
+            {
+                Console.WriteLine("deleted file: " + e.FullPath);
+                File.Delete(fullBackupPath);
+            }
+            else if (Directory.Exists(e.FullPath))
+            {
+                Console.WriteLine("delete directory: " + e.FullPath);
+                Directory.CreateDirectory(fullBackupPath);
+            }
         }
 
         private void btnCreateOneTimeBackup_Click(object sender, EventArgs e)
@@ -84,6 +133,11 @@ namespace SharpBackup
             notifyIcon1.Visible = false;
             this.Show();
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            notifyIcon1.Visible = false;
         }
     }
 }

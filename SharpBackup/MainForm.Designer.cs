@@ -124,7 +124,6 @@
             this.lblOneTimeBackup.Size = new System.Drawing.Size(132, 20);
             this.lblOneTimeBackup.TabIndex = 1;
             this.lblOneTimeBackup.Text = "One-time Backup";
-            this.lblOneTimeBackup.Click += new System.EventHandler(this.lblOneTimeBackup_Click);
             // 
             // panel2
             // 
@@ -165,6 +164,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpBackup";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
