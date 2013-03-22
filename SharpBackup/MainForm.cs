@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
@@ -14,6 +8,9 @@ namespace SharpBackup
 {
     public partial class MainForm : Form
     {
+
+        List<SyncedBackup> syncedBackups = new List<SyncedBackup>(); 
+
         public MainForm()
         {
             InitializeComponent();
@@ -25,26 +22,32 @@ namespace SharpBackup
             JArray backupsJArray = (JArray) settingsObject["backups"];
             foreach (JToken backupJson in backupsJArray)
             {
-                var backup = new Backup(backupJson["name"].ToString(), backupJson["mainPath"].ToString(), backupJson["backupPath"].ToString());
-                backup.SetFilePaths();
+                var backup = new SyncedBackup(backupJson["name"].ToString(), backupJson["backupPath"].ToString());
+
+                foreach (JToken mainPathToken in (JArray)backupJson["mainPaths"])
+                {
+                    String MainPath = mainPathToken.ToString();
+                    Console.WriteLine(MainPath);
+                    backup.addMainPath(MainPath);
+
+                    var watcher = new FileSystemWatcher(MainPath);
+                    watcher.IncludeSubdirectories = true;
+                    watcher.EnableRaisingEvents = true;
+
+                    // Lambda expression to pass the backup to the watcher events.
+                    watcher.Created += (s, e) => watcherCreated(watcher, e, MainPath, backup);
+                    watcher.Changed += (s, e) => watcherChanged(watcher, e, MainPath, backup);
+                    watcher.Deleted += (s, e) => watcherDeleted(watcher, e, MainPath, backup);
+                }
+
                 backup.CopyFilesToBackupPath();
-
-                Console.WriteLine(backup.MainPath);
-
-                var watcher = new FileSystemWatcher(backup.MainPath);
-                watcher.IncludeSubdirectories = true;
-                watcher.EnableRaisingEvents = true;
-
-                // Lambda expression to pass the backup to the watcher events.
-                watcher.Created += (s, e) => watcherCreated(watcher, e, backup);
-                watcher.Changed += (s, e) => watcherChanged(watcher, e, backup);
-                watcher.Deleted += (s, e) => watcherDeleted(watcher, e, backup);
+                syncedBackups.Add(backup);
             }
         }
 
-        private void watcherCreated(object sender, FileSystemEventArgs e, Backup backup)
+        private void watcherCreated(object sender, FileSystemEventArgs e, String MainPath, SyncedBackup backup)
         {
-            String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+            String fullBackupPath = e.FullPath.Replace(MainPath, backup.BackupPath);
             if (File.Exists(e.FullPath))
             {
                 Console.WriteLine("created file" + e.FullPath);
@@ -57,14 +60,14 @@ namespace SharpBackup
             }
         }
 
-        private void watcherChanged(object sender, FileSystemEventArgs e, Backup backup)
+        private void watcherChanged(object sender, FileSystemEventArgs e, String MainPath, SyncedBackup backup)
         {
             var watcher = (FileSystemWatcher) sender;
 
             // Work-around for the bug/feature in FileSystemWatcher that will fire the event multiple times.
             try
             {
-                String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+                String fullBackupPath = e.FullPath.Replace(MainPath, backup.BackupPath);
                 watcher.EnableRaisingEvents = false;
                 if (File.Exists(e.FullPath))
                 {
@@ -82,9 +85,9 @@ namespace SharpBackup
             }
         }
 
-        private void watcherDeleted(FileSystemWatcher watcher, FileSystemEventArgs e, Backup backup)
+        private void watcherDeleted(FileSystemWatcher watcher, FileSystemEventArgs e, String MainPath, SyncedBackup backup)
         {
-            String fullBackupPath = e.FullPath.Replace(backup.MainPath, backup.BackupPath);
+            String fullBackupPath = e.FullPath.Replace(MainPath, backup.BackupPath);
             if (File.Exists(e.FullPath))
             {
                 Console.WriteLine("deleted file: " + e.FullPath);

@@ -2,12 +2,17 @@
     "backups": [
         {
             "name": "test",
-            "mainPath": "C:\\test",
+            "mainPaths": [
+                "C:\\test",
+                "C:\\test3"
+            ],
             "backupPath": "C:\\testbackup"
         },
         {
             "name": "test2",
-            "mainPath": "C:\\test2",
+            "mainPaths": [
+                "C:\\test2"
+            ],
             "backupPath": "C:\\testbackup"
         }
     ]

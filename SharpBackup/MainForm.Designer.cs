@@ -136,12 +136,13 @@
             // 
             // btnCreateOneTimeBackup
             // 
+            this.btnCreateOneTimeBackup.BackColor = System.Drawing.SystemColors.Control;
             this.btnCreateOneTimeBackup.Location = new System.Drawing.Point(12, 32);
             this.btnCreateOneTimeBackup.Name = "btnCreateOneTimeBackup";
             this.btnCreateOneTimeBackup.Size = new System.Drawing.Size(124, 23);
             this.btnCreateOneTimeBackup.TabIndex = 5;
             this.btnCreateOneTimeBackup.Text = "Create";
-            this.btnCreateOneTimeBackup.UseVisualStyleBackColor = true;
+            this.btnCreateOneTimeBackup.UseVisualStyleBackColor = false;
             this.btnCreateOneTimeBackup.Click += new System.EventHandler(this.btnCreateOneTimeBackup_Click);
             // 
             // notifyIcon1
@@ -158,6 +159,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(419, 306);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
