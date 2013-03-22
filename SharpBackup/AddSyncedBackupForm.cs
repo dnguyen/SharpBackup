@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SharpBackup
 {
-    public delegate void AddSyncedBackupHandler(List<Backup> backups_, EventArgs e);
+    public delegate void AddSyncedBackupHandler(SyncedBackup backup, EventArgs e);
 
     public partial class AddSyncedBackupForm : Form
     {
@@ -24,8 +24,8 @@ namespace SharpBackup
             {
                 if (addFolderDialog.SelectedPath == "") return;
 
-                var backup = new Backup(txtName.Text, addFolderDialog.SelectedPath, txtBackupPath.Text);
-                backups.Add(backup);
+                //var backup = new Backup(txtName.Text, addFolderDialog.SelectedPath, txtBackupPath.Text);
+                //backups.Add(backup);
                 listView1.Items.Add(addFolderDialog.SelectedPath);
             }
         }
@@ -38,8 +38,8 @@ namespace SharpBackup
 
                 if (filePath == "") return;
 
-                var backup = new Backup(txtName.Text, filePath, txtBackupPath.Text);
-                backups.Add(backup);
+                //var backup = new Backup(txtName.Text, filePath, txtBackupPath.Text);
+                //backups.Add(backup);
                 listView1.Items.Add(filePath);
             }
         }
@@ -48,7 +48,7 @@ namespace SharpBackup
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                backups.RemoveAt(listView1.SelectedIndices[0]);
+                //backups.RemoveAt(listView1.SelectedIndices[0]);
                 listView1.Items.RemoveAt(listView1.SelectedIndices[0]);
             }
         }
@@ -83,7 +83,16 @@ namespace SharpBackup
                 MessageBox.Show("No backups chosen.", "Add backup", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
+            var syncedBackup = new SyncedBackup(txtName.Text, txtBackupPath.Text);
+            foreach (ListViewItem listItem in listView1.Items)
+            {
+                syncedBackup.AddMainPath(listItem.Text);
+            }
+
+            if (AddSyncedBackupEvent != null)
+                AddSyncedBackupEvent(syncedBackup, EventArgs.Empty);
+            /*
             // Create initial backup files/directories.
             foreach (Backup backup in backups)
             {
@@ -92,7 +101,7 @@ namespace SharpBackup
             }
 
             if (AddSyncedBackupEvent != null)
-                AddSyncedBackupEvent(backups, EventArgs.Empty);
+                AddSyncedBackupEvent(backups, EventArgs.Empty);*/
         }
     }
 }

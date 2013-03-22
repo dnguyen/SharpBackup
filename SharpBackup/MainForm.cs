@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace SharpBackup
@@ -14,21 +15,24 @@ namespace SharpBackup
         public MainForm()
         {
             InitializeComponent();
+            LoadSettings();
+        }
 
+        private void LoadSettings()
+        {
             // TODO: Remove from form class
-            string settingsJson = System.IO.File.ReadAllText("settings.js");
+            string settingsJson = File.ReadAllText("settings.js");
             JObject settingsObject = JObject.Parse(settingsJson);
-
             JArray backupsJArray = (JArray) settingsObject["backups"];
             foreach (JToken backupJson in backupsJArray)
             {
-                var backup = new SyncedBackup(backupJson["name"].ToString(), backupJson["backupPath"].ToString());
+                var backup = new SyncedBackup(backupJson["Name"].ToString(), backupJson["BackupPath"].ToString());
 
-                foreach (JToken mainPathToken in (JArray)backupJson["mainPaths"])
+                foreach (JToken mainPathToken in (JArray)backupJson["MainPaths"])
                 {
                     String MainPath = mainPathToken.ToString();
                     Console.WriteLine(MainPath);
-                    backup.addMainPath(MainPath);
+                    backup.AddMainPath(MainPath);
 
                     var watcher = new FileSystemWatcher(MainPath);
                     watcher.IncludeSubdirectories = true;
@@ -42,6 +46,21 @@ namespace SharpBackup
 
                 backup.CopyFilesToBackupPath();
                 syncedBackups.Add(backup);
+            }
+
+            SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            var settings = new Settings();
+            settings.backups = syncedBackups;
+
+            var serializer = new JsonSerializer();
+            using (var sw = new StreamWriter("settings.js", false))
+            using (var writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, settings);
             }
         }
 
@@ -113,9 +132,12 @@ namespace SharpBackup
             addSyncedBackupForm.Show();
         }
 
-        private void AddSyncedBackup(List<Backup> backups, EventArgs e)
+        private void AddSyncedBackup(SyncedBackup backup, EventArgs e)
         {
             Console.WriteLine("Synced backup added");
+            backup.CopyFilesToBackupPath();
+            syncedBackups.Add(backup);
+            SaveSettings();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

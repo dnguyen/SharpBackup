@@ -8,31 +8,26 @@ using System.Threading.Tasks;
 namespace SharpBackup
 {
     // TODO: Merge with Backup class.
-    class SyncedBackup
+    public class SyncedBackup
     {
-        private String name;
-        private String backupPath;
-        private List<String> mainPaths = new List<string>();
-
-        public String BackupPath
-        {
-            get { return backupPath; }
-        }
+        public String Name { get; set; }
+        public String BackupPath { get; set; }
+        public List<String> MainPaths = new List<string>();
 
         public SyncedBackup(String name, String backupPath)
         {
-            this.name = name;
-            this.backupPath = backupPath;
+            Name = name;
+            BackupPath = backupPath;
         }
 
-        public void addMainPath(String path)
+        public void AddMainPath(String path)
         {
-            mainPaths.Add(path);
+            MainPaths.Add(path);
         }
 
         public void CopyFilesToBackupPath()
         {
-            foreach (String mainPath in mainPaths)
+            foreach (String mainPath in MainPaths)
             {
                 // Check if the path is a directory or file.
                 // If it's a directory, get all directories and files within it.
@@ -44,14 +39,14 @@ namespace SharpBackup
                     // Create directories in backup path
                     foreach (String directoryPath in directoriesPaths)
                     {
-                        String newBackupPath = directoryPath.Replace(mainPath, backupPath);
+                        String newBackupPath = directoryPath.Replace(mainPath, BackupPath);
                         Directory.CreateDirectory(newBackupPath);
                     }
                     // Copy files over to the backup path
                     foreach (String filePath in filePaths)
                     {
-                        String newBackupPath = filePath.Replace(mainPath, backupPath);
-                        Console.WriteLine("*" + backupPath);
+                        String newBackupPath = filePath.Replace(mainPath, BackupPath);
+                        Console.WriteLine("*" + BackupPath);
                         var fileBackup = new FileBackup
                                              {
                                                  OriginalPath = filePath,
@@ -67,7 +62,7 @@ namespace SharpBackup
                     var fileBackup = new FileBackup()
                                          {
                                              OriginalPath = mainPath,
-                                             NewBackupPath = backupPath + "\\" + Path.GetFileName(mainPath)
+                                             NewBackupPath = BackupPath + "\\" + Path.GetFileName(mainPath)
                                          };
                     File.Copy(mainPath, fileBackup.NewBackupPath, true);
                 }

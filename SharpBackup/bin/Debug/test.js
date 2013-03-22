@@ -1,0 +1,1 @@
+{"backups":[{"MainPaths":["C:\\test","C:\\test3"],"Name":"test","BackupPath":"C:\\testbackup"},{"MainPaths":["C:\\test2"],"Name":"test2","BackupPath":"C:\\testbackup"},{"MainPaths":["C:\\Users\\Dylan\\Desktop\\Girl's Day - Expectation"],"Name":"girls' day","BackupPath":"C:\\testbackup"}]}
